@@ -35,8 +35,14 @@ let isJumpingOverObstacle = false; // initially the bug is not jumping over obst
 // timer and score
 let startTime;
 let elapsedTime = 0;
-let score = 0;
+let score = 1;
 
+
+let distanceTraveled = 0;
+let poleWidth = boardWidth; // Adjust the pole width as needed
+let poleHeight = 30; // Extend the pole through all wires
+
+let speed =1;
 
 window.onload = function () {
     board = document.getElementById("board");
@@ -87,7 +93,7 @@ function startGame() {
 
 function updateTimerAndScore() {
     elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Update elapsed time in seconds
-    score += 10; // Adjust score based on your game logic
+    // Adjust score based on your game logic
     // You can add more sophisticated scoring mechanisms based on the game's requirements
 }
 
@@ -138,13 +144,6 @@ function moveBug(direction) {
     bugX = wires[wireIndex].x;
 }
 
-// function to  create a new obstacle 
-function createNewObstacle() {
-    let randomWireIndex = Math.floor(Math.random() * wires.length);
-    let obstacleX = wires[randomWireIndex].x;
-    let obstacleY = obstacleHeight; 
-    return {x: obstacleX, y: obstacleY}
-}
 
 // Function to check collision between two rectangles
 function isCollision(rect1, rect2) {
@@ -153,13 +152,28 @@ function isCollision(rect1, rect2) {
         rect1.x + rect1.width / 2 > rect2.x - rect2.width / 2 &&
         rect1.y - rect1.height / 2 < rect2.y + rect2.height / 2 &&
         rect1.y + rect1.height / 2 > rect2.y - rect2.height / 2
-    );
+        );
+    }
+
+// function to  create a new obstacle 
+function createNewObstacle() {
+    let randomWireIndex = Math.floor(Math.random() * wires.length);
+    let obstacleX = wires[randomWireIndex].x;
+    let obstacleY = obstacleHeight; 
+    return {x: obstacleX, y: obstacleY}
 }
 
 // function to update obstacle position
 function updateObstacles() {
     for (let obstacle of obstacles) {
-        obstacle.y += obstacleSpeed;
+        if (score == 10) {
+            speed = speed * 1.01;
+        } else if (score == 30) {
+            speed = speed * 1.02;
+        }
+        obstacle.y += speed*obstacleSpeed;
+        distanceTraveled += speed*obstacleSpeed;
+
         // check collision
         if (!isJumpingOverObstacle &&
             isCollision(
@@ -199,13 +213,16 @@ function drawObstacles() {
             )
         }
     }
-    
+
+
 
 function initializeGame() {
     // Clear obstacles
     obstacles = [];
-    score = 0;
+    score = 1;
     elapsedTime = 0;
+    distanceTraveled = 0;
+    speed = 1;
 
     // Reset bug position to the middle wire
     bugX = wires[Math.floor(wires.length / 2)].x;
@@ -228,6 +245,8 @@ function update() {
     updateObstacles();
     drawObstacles();
 
+    score =Math.floor(distanceTraveled/100);
+
     // Draw bug
     context.fillStyle = "green";
     context.fillRect(bugX - (bugWidth / 2), bugY - (bugHeight / 2), bugWidth, bugHeight);
@@ -236,6 +255,7 @@ function update() {
     context.font = "20px Arial";
     context.fillText("Time: " + elapsedTime + "s", 10, 30);
     context.fillText("Score: " + score, 10, 60);
+    context.fillText("Distance: " + distanceTraveled, 10, 90);
 
     requestAnimationFrame(update);
 
