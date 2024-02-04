@@ -10,6 +10,16 @@
 <body>
     <div class="container">
         <canvas id="board"></canvas>
+        <div class="score-container">
+            <p>Time: <span id="time">0s</span></p>
+            <p>Score: <span id="score">0</span></p>
+            <p>Distance: <span id="distance">0</span></p>
+            <button class="restart-button">Restart</button>
+        </div>
     </div>
+    <audio id="backgroundAudio" loop autoplay>
+        <source src="./assets/audio.mp3" type="audio/mp3">
+        <!-- Your browser does not support the audio element. -->
+    </audio>
 </body>
 </html>

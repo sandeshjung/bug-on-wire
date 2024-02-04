@@ -1,11 +1,73 @@
 @import url("https://code.jquery.com/jquery-3.6.0.min.js");
 @import url("https://cdn.jsdelivr.net/velocity/1.5.2/velocity.min.js");
 
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
+    background-image : url('./assets/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh; /* 100% of the viewport height */
+    overflow: hidden; /* Prevent scrollbars */
+    /* background-color: #569c96; */
 }
 
+.container {
+    margin-top: 6rem;
+    display: flex;
+    justify-content: center;
+}
+
+.container .score-container {
+    background-color: rgb(21, 124, 90);
+    background-image: url('./assets/panel.jpg');
+    display: flex;
+    padding: 5rem;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+p {
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.restart-button {
+    margin-top: 2rem;
+    padding: 1rem 1rem;
+    width: 14rem;
+    border-radius: 2rem;
+    border: none;
+    background-color: rgb(247, 250, 99);
+    font-size: large;
+    color: rgb(131, 130, 130); 
+    font-weight: bold; /* Make text bold */
+}
+
+
+.restart-button:hover {
+    transform: scale(1.1)
+}   
+
 #board {
-    background-color: skyblue;
+    background-image: url('./assets/Background.jpg');
+    animation: moveBackground 5s linear infinite; 
+}
+
+@keyframes moveBackground {
+    0%, 100% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 0% 50%;
+    }
+    0% {
+        background-position: 0% 100%;
+    }
 }
